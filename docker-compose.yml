@@ -1,0 +1,25 @@
+version: '3.8'
+
+volumes:
+  mysqldata:
+
+services:
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: todo
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - mysqldata:/var/lib/mysql
+  
+  todo:
+    build:
+      context: src
+    restart: always
+    environment:
+      DATABASE_URL: mysql+pymysql://user:password@mysql/todo
+    ports:
+      - "8000:8000"
